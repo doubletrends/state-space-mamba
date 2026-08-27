@@ -1,4 +1,10 @@
-.PHONY: install dev test pipeline data features dm train evaluate clean
+.PHONY: help install dev test pipeline data features dm train evaluate clean
+
+.DEFAULT_GOAL := help
+
+# ── help ─────────────────────────────────────────────────────────────────────
+help:           ## list available targets
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## /{printf "  %-9s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 # ── setup ────────────────────────────────────────────────────────────────────
 install:        ## editable install of the ssm package
