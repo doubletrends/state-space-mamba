@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      # The PyPI torch wheel bundles CUDA and pulls gigabytes of nvidia
+      # packages. The suite is CPU-only, so take the CPU build instead.
+      - name: Install torch (CPU build)
+        run: pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install project and test dependencies
+        run: pip install -r requirements.txt -e ".[dev]"
+
+      - name: Run tests
+        run: pytest -q
