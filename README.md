@@ -194,12 +194,12 @@ tests/                 windowing, leakage guards, artifact IO, model shapes
 
 ## References
 
-[1] Gu, A., & Dao, T. (2023). *Mamba: Linear-Time Sequence Modeling with Selective State Spaces.* arXiv:2312.00752.
-[2] Gu, A., Goel, K., & Ré, C. (2021). *Efficiently Modeling Long Sequences with Structured State Spaces.* ICLR 2022.
-[3] Lin, S. et al. (2023). *SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting.* arXiv:2308.11200.
-[4] Hochreiter, S., & Schmidhuber, J. (1997). *Long Short-Term Memory.* Neural Computation, 9(8).
-[5] Sutskever, I., Vinyals, O., & Le, Q. V. (2014). *Sequence to Sequence Learning with Neural Networks.* NeurIPS 2014.
-[6] Vaswani, A. et al. (2017). *Attention Is All You Need.* NeurIPS 2017.
+- [1] Gu, A., & Dao, T. (2023). *Mamba: Linear-Time Sequence Modeling with Selective State Spaces.* arXiv:2312.00752.
+- [2] Gu, A., Goel, K., & Ré, C. (2021). *Efficiently Modeling Long Sequences with Structured State Spaces.* ICLR 2022.
+- [3] Lin, S. et al. (2023). *SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting.* arXiv:2308.11200.
+- [4] Hochreiter, S., & Schmidhuber, J. (1997). *Long Short-Term Memory.* Neural Computation, 9(8).
+- [5] Sutskever, I., Vinyals, O., & Le, Q. V. (2014). *Sequence to Sequence Learning with Neural Networks.* NeurIPS 2014.
+- [6] Vaswani, A. et al. (2017). *Attention Is All You Need.* NeurIPS 2017.
 
 ---
 
