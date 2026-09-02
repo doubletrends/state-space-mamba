@@ -1,4 +1,4 @@
-.PHONY: help install dev test pipeline data features dm train evaluate clean
+.PHONY: help install dev test pipeline data features dm train evaluate exp1 exp1-sanity exp2 experiments figures clean
 
 .DEFAULT_GOAL := help
 
@@ -34,6 +34,22 @@ evaluate:       ## stage 5 — evaluate
 	python pipeline/step_5_evaluate.py
 
 pipeline: data features dm train evaluate  ## run all five stages in order
+
+# ── experiments ───────────────────────────────────────────────────────────────
+exp1:           ## control — Naive Bayes vs learned combiners, walk-forward
+	python experiments/exp_1_control.py
+
+exp1-sanity:    ## encoder fidelity: in-sample skill + probe reproduction
+	python experiments/exp_1_sanity.py
+
+exp2:           ## MambaSSM refit as a directional classifier, same protocol
+	python experiments/exp_2_direction.py
+
+experiments: exp1 exp2  ## run both walk-forward experiments
+
+figures:        ## regenerate the README figures from the scored summaries
+	python experiments/plot_architecture.py
+	python experiments/plot_summary.py
 
 # ── housekeeping ─────────────────────────────────────────────────────────────
 clean:          ## remove generated artifacts and caches
