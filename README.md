@@ -1,15 +1,39 @@
-[![python - v3.12.10](https://img.shields.io/static/v1?label=python&message=v3.12.10&color=blue&logo=python&logoColor=white)](https://)
-[![cuda - v12.8](https://img.shields.io/static/v1?label=cuda&message=v12.8&color=green&logo=nvidia&logoColor=white)](https://)
-[![torch - v2.11.0](https://img.shields.io/static/v1?label=torch&message=v2.11.0&color=orange&logo=pytorch&logoColor=white)](https://)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![PyTorch 2.11](https://img.shields.io/badge/pytorch-2.11-orange?logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+[![CI](https://github.com/doubletrends/state-space-mamba/actions/workflows/ci.yml/badge.svg)](https://github.com/doubletrends/state-space-mamba/actions/workflows/ci.yml)
 
 # A Selective State-Space Forecaster for BTC, Built from Scratch
 
-A **Mamba** selective state-space model implemented from scratch — selective scan,
-`logcumsumexp` kernel, input-dependent gating — feeding a **sparse disjoint-window
-encoder** designed to make trivial lag-copying unlearnable. The model is wrapped in a
-five-stage data pipeline and measured with a reproducible walk-forward harness.
+A **Mamba** selective state-space model, built from scratch and pointed at Bitcoin
+forecasting — with a reproducible walk-forward harness that reports, honestly, where
+the predictive edge runs out.
+
+Under the hood: a from-scratch selective scan (`logcumsumexp` kernel, input-dependent
+gating) feeding a **sparse disjoint-window encoder** designed to make trivial
+lag-copying unlearnable, all wrapped in a five-stage data pipeline.
 
 <div align="center"><img src="./output/architecture.png" width="94%"></div>
+
+> **Result, up front.** On ~4,000 usable daily rows, out-of-sample directional skill
+> over the base rate is small and within noise of zero — for the from-scratch SSM, for
+> logistic regression, and for a 0-parameter counting model alike. That near-zero
+> ceiling is a property of the data at this size, measured by the walk-forward harness
+> ([Evaluation](#evaluation)).
+
+---
+
+## What to look at
+
+Short on time? These five files carry the work:
+
+| File | What it shows |
+|---|---|
+| [`src/ssm/arch/scans.py`](./src/ssm/arch/scans.py) | selective-scan kernel in two formulations; the default `logcumsumexp` ("Heisen sequence") form stays numerically stable where the direct `cumsum` form diverges — run it as a script to see the gap grow with sequence length. No `mamba-ssm` dependency. |
+| [`src/ssm/data/loader.py`](./src/ssm/data/loader.py) | sparse disjoint-window sampler — seven non-contiguous 7-day windows per anchor date, the core design move against lag-copying |
+| [`experiments/_scoring.py`](./experiments/_scoring.py) | shared skill scoring with moving-block bootstrap 95% intervals, used by every walk-forward experiment |
+| [`experiments/exp_1_control.py`](./experiments/exp_1_control.py) | calendar-year walk-forward: 14-day embargo, per-fold refit and normalisation, nested baselines from a 0-parameter counter up to logistic regression |
+| [`tests/test_loader.py`](./tests/test_loader.py) | leakage guards — train and validation targets are provably disjoint, and the embargo drops exactly the windows it should |
 
 ---
 
@@ -176,3 +200,9 @@ tests/                 windowing, leakage guards, artifact IO, model shapes
 [4] Hochreiter, S., & Schmidhuber, J. (1997). *Long Short-Term Memory.* Neural Computation, 9(8).
 [5] Sutskever, I., Vinyals, O., & Le, Q. V. (2014). *Sequence to Sequence Learning with Neural Networks.* NeurIPS 2014.
 [6] Vaswani, A. et al. (2017). *Attention Is All You Need.* NeurIPS 2017.
+
+---
+
+## License
+
+MIT — see [LICENSE](./LICENSE).

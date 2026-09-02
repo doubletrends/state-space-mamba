@@ -50,6 +50,7 @@ experiments: exp1 exp2  ## run both walk-forward experiments
 figures:        ## regenerate the README figures from the scored summaries
 	python experiments/plot_architecture.py
 	python experiments/plot_summary.py
+	python experiments/plot_social_card.py
 
 # ── housekeeping ─────────────────────────────────────────────────────────────
 clean:          ## remove generated artifacts and caches
