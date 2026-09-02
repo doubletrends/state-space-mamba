@@ -8,6 +8,8 @@ version = "0.1.0"
 description = "Sequence-to-sequence time series forecasting with a selective state-space model"
 readme = "README.md"
 requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "DoubleTrends L.L.C." }]
 # Abstract dependency constraints (lower bounds = versions this project is
 # developed against). Exact, reproducible pins live in requirements.txt.
 dependencies = [

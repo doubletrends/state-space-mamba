@@ -203,6 +203,10 @@ tests/                 windowing, leakage guards, artifact IO, model shapes
 
 ---
 
+## About
+
+Developed and maintained by **DoubleTrends L.L.C.**
+
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+MIT © 2026 DoubleTrends L.L.C. — see [LICENSE](./LICENSE).
