@@ -1,0 +1,555 @@
+{
+  "_provenance": "Tested nodes of the btc_daily_14days workspace in the companion project winrate-matrix (https://github.com/chengmarc/winrate-matrix), copied so this repo can refit the surfaces on training sub-windows without a path dependency.",
+  "_source": "winrate-matrix/workspaces/btc_daily_14days/universe.json",
+  "_copied": "2026-08-30",
+  "horizons": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "start_date": "2015-01-01",
+  "n_thresholds": 30,
+  "display_horizons": [
+    3,
+    7,
+    14
+  ],
+  "nodes": [
+    {
+      "id": "rsi_7",
+      "family": "rsi",
+      "feature": "rsi",
+      "params": {
+        "period": 7
+      }
+    },
+    {
+      "id": "rsi_14",
+      "family": "rsi",
+      "feature": "rsi",
+      "params": {
+        "period": 14
+      }
+    },
+    {
+      "id": "rsi_21",
+      "family": "rsi",
+      "feature": "rsi",
+      "params": {
+        "period": 21
+      }
+    },
+    {
+      "id": "rsi_10",
+      "family": "rsi",
+      "feature": "rsi",
+      "params": {
+        "period": 10
+      }
+    },
+    {
+      "id": "rsi_18",
+      "family": "rsi",
+      "feature": "rsi",
+      "params": {
+        "period": 18
+      }
+    },
+    {
+      "id": "rsi_divergence_7_14",
+      "family": "rsi",
+      "feature": "rsi_spread",
+      "params": {
+        "fast": 7,
+        "slow": 14
+      }
+    },
+    {
+      "id": "wr_7",
+      "family": "williams_r",
+      "feature": "williams_r",
+      "params": {
+        "period": 7
+      }
+    },
+    {
+      "id": "wr_14",
+      "family": "williams_r",
+      "feature": "williams_r",
+      "params": {
+        "period": 14
+      }
+    },
+    {
+      "id": "wr_21",
+      "family": "williams_r",
+      "feature": "williams_r",
+      "params": {
+        "period": 21
+      }
+    },
+    {
+      "id": "wr_spread_7_14",
+      "family": "williams_r",
+      "feature": "wr_spread",
+      "params": {
+        "fast": 7,
+        "slow": 14
+      }
+    },
+    {
+      "id": "roc_3",
+      "family": "roc",
+      "feature": "roc",
+      "params": {
+        "period": 3
+      }
+    },
+    {
+      "id": "roc_5",
+      "family": "roc",
+      "feature": "roc",
+      "params": {
+        "period": 5
+      }
+    },
+    {
+      "id": "roc_7",
+      "family": "roc",
+      "feature": "roc",
+      "params": {
+        "period": 7
+      }
+    },
+    {
+      "id": "roc_14",
+      "family": "roc",
+      "feature": "roc",
+      "params": {
+        "period": 14
+      }
+    },
+    {
+      "id": "roc_spread_5_14",
+      "family": "roc",
+      "feature": "roc_spread",
+      "params": {
+        "fast": 5,
+        "slow": 14
+      }
+    },
+    {
+      "id": "stoch_14",
+      "family": "stoch",
+      "feature": "stoch_k",
+      "params": {
+        "k_period": 14
+      }
+    },
+    {
+      "id": "stoch_7",
+      "family": "stoch",
+      "feature": "stoch_k",
+      "params": {
+        "k_period": 7
+      }
+    },
+    {
+      "id": "stoch_d_14",
+      "family": "stoch",
+      "feature": "stoch_d",
+      "params": {
+        "k_period": 14,
+        "d_period": 3
+      }
+    },
+    {
+      "id": "macd_12_26",
+      "family": "macd",
+      "feature": "macd",
+      "params": {
+        "fast": 12,
+        "slow": 26
+      }
+    },
+    {
+      "id": "macd_9_21",
+      "family": "macd",
+      "feature": "macd",
+      "params": {
+        "fast": 9,
+        "slow": 21
+      }
+    },
+    {
+      "id": "macd_histogram_12_26",
+      "family": "macd",
+      "feature": "macd_histogram",
+      "params": {
+        "fast": 12,
+        "slow": 26,
+        "signal": 9
+      }
+    },
+    {
+      "id": "ma_ratio_7",
+      "family": "ma",
+      "feature": "ma_ratio",
+      "params": {
+        "period": 7
+      }
+    },
+    {
+      "id": "ma_ratio_14",
+      "family": "ma",
+      "feature": "ma_ratio",
+      "params": {
+        "period": 14
+      }
+    },
+    {
+      "id": "ma_ratio_21",
+      "family": "ma",
+      "feature": "ma_ratio",
+      "params": {
+        "period": 21
+      }
+    },
+    {
+      "id": "ma_ratio_50",
+      "family": "ma",
+      "feature": "ma_ratio",
+      "params": {
+        "period": 50
+      }
+    },
+    {
+      "id": "ma_ratio_100",
+      "family": "ma",
+      "feature": "ma_ratio",
+      "params": {
+        "period": 100
+      }
+    },
+    {
+      "id": "ma_ratio_200",
+      "family": "ma",
+      "feature": "ma_ratio",
+      "params": {
+        "period": 200
+      }
+    },
+    {
+      "id": "ma_cross_7_21",
+      "family": "ma",
+      "feature": "ma_cross",
+      "params": {
+        "fast": 7,
+        "slow": 21
+      }
+    },
+    {
+      "id": "ma_cross_14_50",
+      "family": "ma",
+      "feature": "ma_cross",
+      "params": {
+        "fast": 14,
+        "slow": 50
+      }
+    },
+    {
+      "id": "ma_cross_50_200",
+      "family": "ma",
+      "feature": "ma_cross",
+      "params": {
+        "fast": 50,
+        "slow": 200
+      }
+    },
+    {
+      "id": "ma_ratio_30",
+      "family": "ma",
+      "feature": "ma_ratio",
+      "params": {
+        "period": 30
+      }
+    },
+    {
+      "id": "realized_vol_7",
+      "family": "volatility",
+      "feature": "realized_vol",
+      "params": {
+        "period": 7
+      }
+    },
+    {
+      "id": "realized_vol_14",
+      "family": "volatility",
+      "feature": "realized_vol",
+      "params": {
+        "period": 14
+      }
+    },
+    {
+      "id": "realized_vol_21",
+      "family": "volatility",
+      "feature": "realized_vol",
+      "params": {
+        "period": 21
+      }
+    },
+    {
+      "id": "realized_vol_30",
+      "family": "volatility",
+      "feature": "realized_vol",
+      "params": {
+        "period": 30
+      }
+    },
+    {
+      "id": "atr_14",
+      "family": "volatility",
+      "feature": "atr",
+      "params": {
+        "period": 14
+      }
+    },
+    {
+      "id": "bb_pct_14",
+      "family": "volatility",
+      "feature": "bb_pct",
+      "params": {
+        "period": 14
+      }
+    },
+    {
+      "id": "bb_pct_20",
+      "family": "volatility",
+      "feature": "bb_pct",
+      "params": {
+        "period": 20
+      }
+    },
+    {
+      "id": "bb_width_20",
+      "family": "volatility",
+      "feature": "bb_width",
+      "params": {
+        "period": 20
+      }
+    },
+    {
+      "id": "vol_ratio_7_21",
+      "family": "volatility",
+      "feature": "vol_ratio",
+      "params": {
+        "fast": 7,
+        "slow": 21
+      }
+    },
+    {
+      "id": "volume_ratio_7",
+      "family": "volume",
+      "feature": "volume_ratio",
+      "params": {
+        "period": 7
+      }
+    },
+    {
+      "id": "volume_ratio_14",
+      "family": "volume",
+      "feature": "volume_ratio",
+      "params": {
+        "period": 14
+      }
+    },
+    {
+      "id": "volume_ratio_30",
+      "family": "volume",
+      "feature": "volume_ratio",
+      "params": {
+        "period": 30
+      }
+    },
+    {
+      "id": "drawdown_7",
+      "family": "drawdown",
+      "feature": "drawdown",
+      "params": {
+        "period": 7
+      }
+    },
+    {
+      "id": "drawdown_14",
+      "family": "drawdown",
+      "feature": "drawdown",
+      "params": {
+        "period": 14
+      }
+    },
+    {
+      "id": "drawdown_30",
+      "family": "drawdown",
+      "feature": "drawdown",
+      "params": {
+        "period": 30
+      }
+    },
+    {
+      "id": "drawdown_60",
+      "family": "drawdown",
+      "feature": "drawdown",
+      "params": {
+        "period": 60
+      }
+    },
+    {
+      "id": "drawdown_90",
+      "family": "drawdown",
+      "feature": "drawdown",
+      "params": {
+        "period": 90
+      }
+    },
+    {
+      "id": "drawdown_120",
+      "family": "drawdown",
+      "feature": "drawdown",
+      "params": {
+        "period": 120
+      }
+    },
+    {
+      "id": "drawdown_recovery_7_90",
+      "family": "drawdown",
+      "feature": "drawdown_recovery",
+      "params": {
+        "short": 7,
+        "long": 90
+      }
+    },
+    {
+      "id": "dxy_ret_1",
+      "family": "dxy",
+      "feature": "dxy_ret",
+      "params": {
+        "period": 1
+      }
+    },
+    {
+      "id": "dxy_ret_5",
+      "family": "dxy",
+      "feature": "dxy_ret",
+      "params": {
+        "period": 5
+      }
+    },
+    {
+      "id": "dxy_ret_10",
+      "family": "dxy",
+      "feature": "dxy_ret",
+      "params": {
+        "period": 10
+      }
+    },
+    {
+      "id": "dxy_ret_20",
+      "family": "dxy",
+      "feature": "dxy_ret",
+      "params": {
+        "period": 20
+      }
+    },
+    {
+      "id": "dxy_ma_ratio_20",
+      "family": "dxy",
+      "feature": "dxy_ma_ratio",
+      "params": {
+        "period": 20
+      }
+    },
+    {
+      "id": "dxy_ma_ratio_10",
+      "family": "dxy",
+      "feature": "dxy_ma_ratio",
+      "params": {
+        "period": 10
+      }
+    },
+    {
+      "id": "dxy_ma_ratio_50",
+      "family": "dxy",
+      "feature": "dxy_ma_ratio",
+      "params": {
+        "period": 50
+      }
+    },
+    {
+      "id": "mvrv",
+      "family": "on_chain",
+      "feature": "mvrv",
+      "params": {}
+    },
+    {
+      "id": "hash_rate_ma_ratio_30",
+      "family": "on_chain",
+      "feature": "hash_rate_ma_ratio",
+      "params": {
+        "period": 30
+      }
+    },
+    {
+      "id": "adr_act_ma_ratio_30",
+      "family": "on_chain",
+      "feature": "adr_act_ma_ratio",
+      "params": {
+        "period": 30
+      }
+    },
+    {
+      "id": "adr_act_ma_ratio_7",
+      "family": "on_chain",
+      "feature": "adr_act_ma_ratio",
+      "params": {
+        "period": 7
+      }
+    },
+    {
+      "id": "hash_rate_ma_ratio_90",
+      "family": "on_chain",
+      "feature": "hash_rate_ma_ratio",
+      "params": {
+        "period": 90
+      }
+    },
+    {
+      "id": "days_since_halving",
+      "family": "cycle",
+      "feature": "days_since_halving",
+      "params": {}
+    },
+    {
+      "id": "cycle_phase",
+      "family": "cycle",
+      "feature": "cycle_phase",
+      "params": {}
+    },
+    {
+      "id": "days_to_halving",
+      "family": "cycle",
+      "feature": "days_to_halving",
+      "params": {}
+    }
+  ]
+}

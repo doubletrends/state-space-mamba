@@ -1,7 +1,7 @@
 {
   "data_start": "2015-01-06",
-  "data_end": "2026-06-20",
-  "n_rows": 4184,
+  "data_end": "2026-08-23",
+  "n_rows": 4248,
   "window_anchors": [
     365,
     180,
@@ -17,8 +17,8 @@
   "n_layer": 3,
   "d_state": 16,
   "dropout": 0.1,
-  "best_epoch": 10,
-  "best_val_loss": 0.01167839978976796,
+  "best_epoch": 54,
+  "best_val_loss": 0.004607570097924998,
   "run_config": {
     "epochs": 1000,
     "patience": 1000,
@@ -28,6 +28,7 @@
     "val_seed": 42,
     "split_mode": "random_full_data",
     "target_val_loss": 0.015,
+    "min_epochs_before_target_stop": 50,
     "weight_decay": 0.001
   }
 }

@@ -19,7 +19,8 @@ from tqdm import tqdm
 from ssm.config import (
     DM_CSV, CHECKPOINT, TRAIN_META_JSON,
     WINDOW_ANCHORS, WINDOW_LEN, PREDICT_WINDOW,
-    EPOCHS, PATIENCE, LR, BATCH_SIZE, TARGET_VAL_LOSS, VAL_SPLIT, VAL_SEED, WEIGHT_DECAY,
+    EPOCHS, PATIENCE, LR, BATCH_SIZE, TARGET_VAL_LOSS, MIN_EPOCHS_BEFORE_TARGET_STOP,
+    VAL_SPLIT, VAL_SEED, WEIGHT_DECAY,
     D_MODEL, N_LAYER, D_STATE, DROPOUT,
     ensure_dirs,
 )
@@ -39,6 +40,7 @@ def train():
     print(f'Full data       : {data.index[0].date()} → {data.index[-1].date()}  ({len(data)} rows)')
     split_label = 'chronological' if VAL_SEED is None else f'random (seed={VAL_SEED})'
     print(f'Val split       : {split_label} {1 - VAL_SPLIT:.0%}/{VAL_SPLIT:.0%} on full DM dataset\n')
+    print(f'Target stop     : val_loss <= {TARGET_VAL_LOSS:.6f} after epoch {MIN_EPOCHS_BEFORE_TARGET_STOP}\n')
 
     # Chronological 90/10 train/val split across the full DM dataset.
     train_loader, val_loader = create_dataloader(
@@ -95,10 +97,13 @@ def train():
             best_val_loss    = avg_val
             best_epoch       = epoch
             patience_counter = 0
-            save_checkpoint(CHECKPOINT, model, best_epoch, best_val_loss)
+            save_checkpoint(CHECKPOINT, model, data, best_epoch, best_val_loss)
             write_train_meta(TRAIN_META_JSON, data, best_epoch, best_val_loss)
-            if best_val_loss <= TARGET_VAL_LOSS:
-                tqdm.write(f'\nReached target val loss {TARGET_VAL_LOSS:.6f} at epoch {epoch}.')
+            if epoch >= MIN_EPOCHS_BEFORE_TARGET_STOP and best_val_loss <= TARGET_VAL_LOSS:
+                tqdm.write(
+                    f'\nReached target val loss {TARGET_VAL_LOSS:.6f} at epoch {epoch} '
+                    f'(earliest stop epoch {MIN_EPOCHS_BEFORE_TARGET_STOP}).'
+                )
                 break
         else:
             patience_counter += 1

@@ -70,6 +70,7 @@ BATCH_SIZE   = 32
 VAL_SPLIT    = 0.10   # approx. 370 target days out of the current full window set
 VAL_SEED     = 42     # fixed random split over the full DM dataset
 TARGET_VAL_LOSS = 0.015
+MIN_EPOCHS_BEFORE_TARGET_STOP = 50
 WEIGHT_DECAY = 1e-3
 
 # ── model hyperparameters ────────────────────────────────────────────────────

@@ -26,6 +26,7 @@ from ssm.config import (
     N_LAYER,
     PATIENCE,
     PREDICT_WINDOW,
+    MIN_EPOCHS_BEFORE_TARGET_STOP,
     TARGET_VAL_LOSS,
     VAL_SEED,
     VAL_SPLIT,
@@ -38,6 +39,12 @@ META_COMPARE_KEYS = (
     'data_start', 'data_end', 'n_rows', 'window_anchors', 'window_len', 'predict_window',
     'd_model', 'n_layer', 'd_state', 'dropout',
 )
+
+
+def _resume_signature(data: pd.DataFrame) -> dict[str, Any]:
+    """Build the subset of train metadata that must match to reuse a prior best."""
+    expected = build_train_meta(data, best_epoch=0, best_val_loss=float('inf'))
+    return {key: expected[key] for key in META_COMPARE_KEYS}
 
 
 def build_train_meta(data: pd.DataFrame, best_epoch: int,
@@ -65,6 +72,7 @@ def build_train_meta(data: pd.DataFrame, best_epoch: int,
             'val_seed': VAL_SEED,
             'split_mode': 'chronological_full_data' if VAL_SEED is None else 'random_full_data',
             'target_val_loss': TARGET_VAL_LOSS,
+            'min_epochs_before_target_stop': MIN_EPOCHS_BEFORE_TARGET_STOP,
             'weight_decay': WEIGHT_DECAY,
         },
     }
@@ -83,18 +91,21 @@ def load_train_meta(path: Path) -> dict[str, Any]:
         return json.load(f)
 
 
-def checkpoint_payload(model: torch.nn.Module, best_epoch: int, best_val_loss: float) -> dict[str, Any]:
+def checkpoint_payload(model: torch.nn.Module, data: pd.DataFrame,
+                       best_epoch: int, best_val_loss: float) -> dict[str, Any]:
     """Build the checkpoint payload saved by stage 4."""
     return {
         'model_state_dict': model.state_dict(),
         'best_epoch': best_epoch,
         'best_val_loss': best_val_loss,
+        'resume_signature': _resume_signature(data),
     }
 
 
-def save_checkpoint(path: Path, model: torch.nn.Module, best_epoch: int, best_val_loss: float) -> None:
+def save_checkpoint(path: Path, model: torch.nn.Module, data: pd.DataFrame,
+                    best_epoch: int, best_val_loss: float) -> None:
     """Save the best checkpoint in the shared payload format."""
-    torch.save(checkpoint_payload(model, best_epoch, best_val_loss), path)
+    torch.save(checkpoint_payload(model, data, best_epoch, best_val_loss), path)
 
 
 def load_checkpoint_state(path: Path, device: torch.device | str) -> dict[str, Any]:
@@ -112,11 +123,11 @@ def load_existing_best(meta_path: Path, checkpoint_path: Path,
     The metadata is only trusted when it matches the current window/model contract.
     Older plain ``state_dict`` checkpoints intentionally do not provide loss metadata.
     """
-    expected = build_train_meta(data, best_epoch=0, best_val_loss=float('inf'))
+    expected_signature = _resume_signature(data)
 
     if meta_path.exists():
         meta = load_train_meta(meta_path)
-        if all(meta.get(key) == expected[key] for key in META_COMPARE_KEYS):
+        if all(meta.get(key) == expected_signature[key] for key in META_COMPARE_KEYS):
             best_val_loss = meta.get('best_val_loss')
             best_epoch = meta.get('best_epoch', 0)
             if isinstance(best_val_loss, (int, float)) and math.isfinite(best_val_loss):
@@ -125,6 +136,9 @@ def load_existing_best(meta_path: Path, checkpoint_path: Path,
     if checkpoint_path.exists():
         payload = torch.load(checkpoint_path, map_location='cpu')
         if isinstance(payload, dict) and 'model_state_dict' in payload:
+            signature = payload.get('resume_signature')
+            if signature != expected_signature:
+                return float('inf'), 0, None
             best_val_loss = payload.get('best_val_loss')
             best_epoch = payload.get('best_epoch', 0)
             if isinstance(best_val_loss, (int, float)) and math.isfinite(best_val_loss):

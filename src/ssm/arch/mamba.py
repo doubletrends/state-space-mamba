@@ -38,10 +38,12 @@ class ModelArgs:
 
 class MambaSSM(nn.Module):
 
-    def __init__(self, args: ModelArgs, input_dimension: int, n_horizons: int, n_windows: int):
+    def __init__(self, args: ModelArgs, input_dimension: int, n_horizons: int, n_windows: int,
+                 sequence_output: bool = True):
         super().__init__()
-        self.args      = args
-        self.n_windows = n_windows
+        self.args            = args
+        self.n_windows       = n_windows
+        self.sequence_output = sequence_output
 
         self.input_layer = nn.Linear(input_dimension, args.d_model)
         self.layers      = nn.ModuleList([ResidualBlock(args) for _ in range(args.n_layer)])
@@ -61,8 +63,13 @@ class MambaSSM(nn.Module):
         x    = self.norm_f(x)
         last = x[:, -1, :].reshape(b, w * self.args.d_model)   # concat window embeddings
         last = self.dropout(last)
+        out  = self.head(last)
+        if not self.sequence_output:
+            # (batch, n_horizons) — raw scores. Used by the directional task, where the
+            # head emits one logit per horizon and the loss is BCE-with-logits.
+            return out
         # (batch, 1, n_horizons, 1): 1 forward window, n_horizons days, 1 feature (residual).
-        return self.head(last).unsqueeze(1).unsqueeze(-1)
+        return out.unsqueeze(1).unsqueeze(-1)
 
 
 class ResidualBlock(nn.Module):
@@ -145,3 +152,16 @@ def create_model(data, n_horizons: int, device, n_windows: int,
           f'n_layer={n_layer}  d_state={d_state}  dropout={dropout}  '
           f'n_windows={n_windows}  n_horizons={n_horizons}')
     return model
+
+
+def create_direction_model(input_dimension: int, n_horizons: int, device, n_windows: int,
+                           d_model: int = 32, n_layer: int = 3, d_state: int = 16,
+                           dropout: float = 0.1):
+    """Build the directional classifier: one logit per horizon, for BCE-with-logits.
+
+    Same encoder as :func:`create_model`; only the output contract changes. Every
+    feature column is an input here, so ``input_dimension`` is passed explicitly
+    rather than inferred as "all columns but the target".
+    """
+    args  = ModelArgs(d_model=d_model, n_layer=n_layer, d_state=d_state, dropout=dropout)
+    return MambaSSM(args, input_dimension, n_horizons, n_windows, sequence_output=False).to(device)

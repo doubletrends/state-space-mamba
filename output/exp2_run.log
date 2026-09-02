@@ -1,0 +1,90 @@
+Device     : cuda
+Data       : 4248 rows  2015-01-06 -> 2026-08-23
+Features   : 8 channels (train-only standardised per fold)
+Windows    : [365, 180, 90, 60, 30, 14, 0] x 7   nearest window ends on t
+Target     : direction at +1d .. +14d, BCE-with-logits
+Protocol   : walk-forward by calendar year from 2019, embargo=14 rows
+
+  fold 2019: train= 1071  test= 365  best_epoch=  1  inner_val_bce=0.75118
+  fold 2020: train= 1436  test= 366  best_epoch=  4  inner_val_bce=0.69680
+  fold 2021: train= 1802  test= 365  best_epoch=  2  inner_val_bce=0.70027
+  fold 2022: train= 2167  test= 365  best_epoch=  3  inner_val_bce=0.66898
+  fold 2023: train= 2532  test= 365  best_epoch=  2  inner_val_bce=0.70226
+  fold 2024: train= 2897  test= 366  best_epoch=  2  inner_val_bce=0.71651
+  fold 2025: train= 3263  test= 365  best_epoch=  1  inner_val_bce=0.70288
+  fold 2026: train= 3628  test= 235  best_epoch=  5  inner_val_bce=0.71406
+
+================================================================================================
+MambaSSM directional -- pooled out-of-sample scores  (N=38983 predictions, 2019-01-01 -> 2026-08-22)
+================================================================================================
+
+  horizon +3d   n=2789   realized up-rate=53.1%
+    model         log loss    skill              95% CI    Brier     AUC     acc
+    ------------ --------- -------- ------------------- -------- ------- -------
+    base           0.69378  +0.0000           --         0.25030  0.4965   0.531
+    mamba_dir      0.71569  -0.0316  [-0.0525, -0.0134]  0.26009  0.5171   0.529
+    mamba_cal      0.70152  -0.0112  [-0.0274, +0.0035]  0.25404  0.5081   0.512
+
+  horizon +7d   n=2785   realized up-rate=53.0%
+    model         log loss    skill              95% CI    Brier     AUC     acc
+    ------------ --------- -------- ------------------- -------- ------- -------
+    base           0.69440  +0.0000           --         0.25061  0.4793   0.530
+    mamba_dir      0.72573  -0.0451  [-0.0768, -0.0164]  0.26430  0.5045   0.516
+    mamba_cal      0.71644  -0.0317  [-0.0660, -0.0063]  0.26081  0.4885   0.492
+
+  horizon +14d   n=2778   realized up-rate=55.1%
+    model         log loss    skill              95% CI    Brier     AUC     acc
+    ------------ --------- -------- ------------------- -------- ------- -------
+    base           0.69185  +0.0000           --         0.24930  0.4715   0.551
+    mamba_dir      0.76937  -0.1121  [-0.2033, -0.0405]  0.27827  0.5199   0.509
+    mamba_cal      0.74916  -0.0828  [-0.1411, -0.0110]  0.26644  0.5442   0.537
+
+  mamba_cal @ +3d, bucketed by model edge  (mean base rate 56.2%):
+    bucket           n   avg edge   realized up    vs base
+    ------------ ----- ---------- ------------- ----------
+    < -10pp        592     -14.5pp         52.9%      -3.3pp
+    -10 to -5      237      -7.7pp         54.4%      -1.8pp
+    -5 to 0        738      -2.0pp         50.7%      -5.5pp
+    0 to +5        830      +2.1pp         51.6%      -4.6pp
+    +5 to +10      268      +6.7pp         58.6%      +2.4pp
+    > +10pp        124     +13.8pp         64.5%      +8.3pp
+
+  mamba_cal @ +7d, bucketed by model edge  (mean base rate 56.0%):
+    bucket           n   avg edge   realized up    vs base
+    ------------ ----- ---------- ------------- ----------
+    < -10pp        583     -17.3pp         52.7%      -3.4pp
+    -10 to -5      533      -7.4pp         56.7%      +0.6pp
+    -5 to 0        592      -2.3pp         52.9%      -3.2pp
+    0 to +5        576      +2.9pp         48.4%      -7.6pp
+    +5 to +10      376      +6.7pp         54.0%      -2.0pp
+    > +10pp        125     +14.6pp         57.6%      +1.6pp
+
+  mamba_cal @ +14d, bucketed by model edge  (mean base rate 58.4%):
+    bucket           n   avg edge   realized up    vs base
+    ------------ ----- ---------- ------------- ----------
+    < -10pp        944     -25.1pp         52.1%      -6.3pp
+    -10 to -5      161      -7.3pp         47.8%     -10.6pp
+    -5 to 0        291      -1.9pp         58.1%      -0.3pp
+    0 to +5        470      +2.7pp         51.5%      -6.9pp
+    +5 to +10      370      +7.2pp         61.6%      +3.2pp
+    > +10pp        542     +16.4pp         59.8%      +1.4pp
+
+  Per-fold skill at +7d:
+    2019  n=365  mamba_dir=-0.1017  mamba_cal=+0.0158
+    2020  n=366  mamba_dir=-0.0302  mamba_cal=-0.1950
+    2021  n=365  mamba_dir=-0.0370  mamba_cal=-0.0205
+    2022  n=365  mamba_dir=+0.0180  mamba_cal=+0.0142
+    2023  n=365  mamba_dir=-0.0648  mamba_cal=-0.0332
+    2024  n=366  mamba_dir=-0.0622  mamba_cal=-0.0058
+    2025  n=365  mamba_dir=-0.0089  mamba_cal=-0.0216
+    2026  n=228  mamba_dir=-0.0936  mamba_cal=-0.0070
+
+  Prediction spread by horizon (a collapsed model outputs a near-constant):
+    horizon        min      max      std
+    --------- -------- -------- --------
+    +3          0.2578   0.8095   0.1103
+    +7          0.2840   0.8532   0.1058
+    +14         0.1569   0.9741   0.1720
+
+Predictions -> C:\Users\NewAdmin\Repo\state-space-mamba\output\exp2_predictions.csv
+Summary     -> C:\Users\NewAdmin\Repo\state-space-mamba\output\exp2_summary.json

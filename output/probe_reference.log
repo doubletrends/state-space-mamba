@@ -1,0 +1,42 @@
+Fetching latest data...
+
+=== Signal Probe [btc_daily_14days] — 2026-08-30 ===
+
+One node per family, auto-selected by peak |+7d| edge (n≥30 slices):
+
+  family              node                          current x       n  weight       +1d     +2d     +3d     +4d     +5d     +6d     +7d     +8d     +9d    +10d    +11d    +12d    +13d    +14d
+  ------------------  --------------------------  -----------  ------  ------  ----------------------------------------------------------------------------------------------------------------
+  cycle               days_since_halving                  861     139    0.69    -4.3pp  -7.8pp -12.4pp -13.8pp -15.2pp -15.6pp -14.5pp -15.5pp -17.2pp -18.9pp -20.8pp -23.6pp -26.7pp -27.1pp
+  drawdown            drawdown_recovery_7_90                0     202    0.77    +6.4pp  +9.7pp  +5.8pp  +3.5pp  +3.0pp  +1.7pp  +4.1pp  +2.6pp  +5.1pp  +6.8pp  +7.5pp +10.0pp  +9.1pp  +6.9pp
+  dxy                 dxy_ma_ratio_50               -0.009709     190    0.76    +2.6pp  +3.4pp  +0.7pp  -0.0pp  +3.6pp  +0.3pp  -0.2pp  -1.4pp  -3.4pp  -1.7pp  -0.4pp  -4.6pp  -2.5pp  -3.1pp
+  ma                  ma_ratio_100                     0.1811     185    0.76    +0.2pp  +3.4pp  +1.7pp  +1.3pp  +2.6pp  +2.3pp  +3.5pp  +4.6pp  +2.0pp  +4.5pp  +2.6pp  +4.5pp  +4.6pp  +3.8pp
+  macd                macd_9_21                       0.05561      88    0.54    +0.7pp  +5.4pp +10.7pp +18.6pp +14.7pp +16.6pp +14.3pp +14.6pp  +9.6pp  +8.1pp  +7.6pp  +9.5pp +11.3pp +13.5pp
+  on_chain            mvrv                              1.465     235    0.80    -0.5pp  -3.5pp  -4.8pp  -5.7pp  -5.8pp  -5.9pp  -7.6pp  -8.3pp  -9.1pp  -7.6pp -10.6pp -11.4pp -11.4pp -11.4pp
+  roc                 roc_5                          0.005346     410    0.88    -2.1pp  +0.5pp  +1.1pp  +0.3pp  +2.4pp  +2.6pp  +2.1pp  +2.1pp  +1.7pp  +1.9pp  +0.6pp  +0.8pp  +0.6pp  +0.7pp
+  rsi                 rsi_divergence_7_14              -34.04      26    0.00    +9.0pp +18.9pp +22.3pp +18.6pp  +2.8pp  +6.8pp  +6.7pp  +6.3pp  +6.2pp +13.1pp  +9.0pp  +9.1pp  +8.7pp +12.8pp
+  stoch               stoch_d_14                        88.84     227    0.80    +3.0pp  +4.2pp  +5.8pp  +4.3pp  +6.0pp  +7.5pp  +9.8pp +12.0pp +13.0pp +13.6pp +11.5pp +14.0pp +13.2pp +11.4pp
+  volatility          realized_vol_21                   40.99     324    0.85    -2.8pp  -2.8pp  -2.0pp  -3.6pp  -4.2pp  -3.0pp  -3.6pp  -5.3pp  -4.0pp  -7.0pp  -7.0pp  -6.0pp  -5.8pp  -4.1pp
+  volume              volume_ratio_7                   0.4057      67    0.43    -9.2pp  +2.5pp  +3.5pp  +0.7pp  +1.7pp  +0.4pp  -0.4pp  -3.9pp  +5.1pp  +1.3pp  +4.0pp  +4.0pp  +2.2pp  +0.3pp
+  williams_r          wr_spread_7_14                  -0.3813      32    0.04    +0.7pp  +5.3pp  +1.7pp +11.2pp  +7.6pp  +7.8pp +10.8pp +10.3pp +10.3pp  +6.4pp  -0.1pp  -3.2pp  -3.6pp  +2.9pp
+
+Naive Bayes combination [12 signals, one per family]:
+
+  horizon    base rate    combined        edge
+  --------  ----------  ----------  ----------
+  +1d            52.5%       51.0%        -1.5pp
+  +2d            54.1%       64.4%       +10.3pp
+  +3d            54.6%       60.1%        +5.6pp
+  +4d            54.4%       56.3%        +1.9pp
+  +5d            54.9%       59.7%        +4.8pp
+  +6d            54.7%       58.4%        +3.7pp
+  +7d            54.8%       59.7%        +4.9pp
+  +8d            55.3%       57.1%        +1.8pp
+  +9d            55.3%       56.2%        +1.0pp
+  +10d           56.0%       57.0%        +1.0pp
+  +11d           56.3%       51.5%        -4.9pp
+  +12d           56.3%       53.4%        -2.9pp
+  +13d           56.7%       51.9%        -4.8pp
+  +14d           56.5%       48.9%        -7.6pp
+
+  * Assumes feature independence. Correlated signals may inflate the estimate.
+

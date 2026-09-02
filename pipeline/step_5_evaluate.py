@@ -48,6 +48,7 @@ TARGET_COLUMN = 'log_price_residual_target'
 
 DEEP_BLUE = 'steelblue'
 PALE_BLUE = 'lightsteelblue'
+PROJECTION_WARMUP_DAYS = 30
 
 
 def load_artifacts():
@@ -116,6 +117,25 @@ def project_feature_by_cycle_day(history: pd.DataFrame, future_info: pd.DataFram
     return pd.Series(preds, index=future_info.index, name=column)
 
 
+def blend_from_last_observation(history_last: float, projected: pd.Series, transition_days: int) -> pd.Series:
+    """Blend a projected series from the last observed value into its synthetic path.
+
+    Day 1 of the rollout stays anchored to the last observed feature value; the
+    synthetic cycle-based projection is phased in over ``transition_days``.
+    """
+    if projected.empty or transition_days <= 0:
+        return projected
+
+    steps = min(len(projected), transition_days)
+    weights = np.linspace(0.0, 1.0, num=steps, endpoint=True)
+    eased = 3.0 * weights ** 2 - 2.0 * weights ** 3
+
+    blended = projected.copy()
+    raw = projected.iloc[:steps].to_numpy(dtype=float)
+    blended.iloc[:steps] = (1.0 - eased) * float(history_last) + eased * raw
+    return blended
+
+
 def project_future_inputs(history: pd.DataFrame, forecast_days: int) -> pd.DataFrame:
     """Build synthetic future exogenous inputs before residual autoregression."""
     future_index = pd.date_range(history.index[-1] + pd.Timedelta(days=1), periods=forecast_days, freq='D')
@@ -124,7 +144,10 @@ def project_future_inputs(history: pd.DataFrame, forecast_days: int) -> pd.DataF
     future['years_since_halving'] = future_info['years_since_halving']
 
     for column in PROJECTED_FEATURE_COLUMNS:
-        future[column] = project_feature_by_cycle_day(history, future_info, column)
+        projected = project_feature_by_cycle_day(history, future_info, column)
+        future[column] = blend_from_last_observation(
+            float(history[column].dropna().iloc[-1]), projected, PROJECTION_WARMUP_DAYS,
+        )
 
     future['log_price_residual'] = np.nan
     return future

@@ -1,0 +1,35 @@
+==============================================================================
+CHECK A -- in-sample skill (fit and scored on the same full history)
+==============================================================================
+  If the encoding is correct these must be clearly positive: the bins were
+  counted from these rows. A flat or negative number here means a bug.
+
+    horizon        n   base ll     nb ll     skill      AUC
+    --------- ------ --------- --------- --------- --------
+    +3          4250   0.68902   0.66079   +0.0410   0.6335
+    +7          4246   0.68866   0.63786   +0.0738   0.6759
+    +14         4239   0.68486   0.60981   +0.1096   0.7204
+
+==============================================================================
+CHECK B -- current combined estimate  (compare to: run.py --probe)
+==============================================================================
+  as of 2026-08-23, one node per family, full-history surfaces
+
+    family        node                         current x       +3d      +7d     +14d
+    ------------- -------------------------- ----------- ---------------------------
+    cycle         days_since_halving                 855    -12.0pp   -15.7pp   -26.6pp
+    drawdown      drawdown_recovery_7_90               0     +5.8pp    +4.2pp    +6.9pp
+    dxy           dxy_ma_ratio_50               -0.01516     +4.9pp    +2.1pp    +3.6pp
+    ma            ma_ratio_100                    0.1763     +1.1pp    +3.9pp    +5.1pp
+    macd          macd_9_21                      0.04758     +1.7pp    +7.0pp   +16.6pp
+    on_chain      mvrv                             1.468     -4.5pp    -7.3pp   -11.1pp
+    roc           roc_5                           0.2021     +5.5pp   +21.3pp   +19.6pp
+    rsi           rsi_divergence_7_14              9.827     -0.8pp    +1.8pp    -0.9pp
+    stoch         stoch_d_14                       89.76     +5.3pp    +8.0pp   +11.1pp
+    volatility    realized_vol_21                  39.01     +0.7pp    -2.5pp    -1.2pp
+    volume        volume_ratio_7                  0.7528     +0.2pp    +1.8pp    +2.7pp
+    williams_r    wr_spread_7_14               -0.001196     -0.2pp    -0.1pp    +1.1pp
+
+                  combined                                   56.1%    56.5%    61.3%
+                  base rate                                  54.5%    54.7%    56.4%
+

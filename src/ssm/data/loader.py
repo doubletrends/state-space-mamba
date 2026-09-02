@@ -48,6 +48,48 @@ def build_windows(data, window_anchors, window_len: int, predict_window: int = 1
     return X, y
 
 
+def build_direction_windows(feats: np.ndarray, close: np.ndarray, window_anchors,
+                            window_len: int, horizons: list[int]):
+    """Sparse-window inputs paired with **binary direction** targets.
+
+    The sibling of :func:`build_windows` for the directional task. Two things differ,
+    and both are deliberate:
+
+    * The target is ``close[t+h] > close[t]`` for each h in ``horizons`` -- a bounded,
+      roughly balanced label -- rather than a residual *level*. Under a level target
+      almost all of the variance is the level itself, which any window carries for
+      free, so the loss is dominated by carrying rather than forecasting. Under a
+      direction target, copying the last input predicts nothing at all, which is why
+      the anchors no longer need a gap to suppress lag-copying.
+    * Every feature column is an input. There is no target column to hold out,
+      because the target is derived from price rather than being one of the columns.
+
+    Returns ``(X, y, t_index)`` where ``X`` is
+    ``(n, n_windows, window_len, n_features)``, ``y`` is ``(n, n_horizons)`` holding
+    1.0 / 0.0 / NaN, and ``t_index`` gives the anchor row of each sample. NaN marks a
+    horizon whose outcome is not yet realised; the caller masks those out of the loss.
+    """
+    # Anchors are positional offsets ("a rows back"), which equal calendar days only
+    # because the feature frame sits on the gap-free daily spine built by stage 2.
+    max_offset = max(window_anchors) + window_len - 1
+    n          = len(close)
+    ts         = np.arange(max_offset, n)
+
+    X = np.empty((len(ts), len(window_anchors), window_len, feats.shape[1]), dtype=np.float32)
+    for i, t in enumerate(ts):
+        for j, a in enumerate(window_anchors):
+            start = t - a - (window_len - 1)
+            X[i, j] = feats[start:start + window_len]
+
+    y = np.full((len(ts), len(horizons)), np.nan, dtype=np.float32)
+    for k, h in enumerate(horizons):
+        future  = ts + h
+        in_data = future < n
+        y[in_data, k] = (close[future[in_data]] > close[ts[in_data]]).astype(np.float32)
+
+    return X, y, ts
+
+
 def train_val_split(X, y, val_split: float, embargo: int = 0, random_seed: int | None = None):
     """Train/val split.
 

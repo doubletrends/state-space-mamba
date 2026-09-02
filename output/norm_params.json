@@ -1,8 +1,8 @@
 {
   "realized_vol_30": {
     "transform": "zscore",
-    "mean": 51.9198338698321,
-    "std": 24.023632518434134
+    "mean": 49.962761048321276,
+    "std": 23.80152500241551
   },
   "dxy_ret_30": {
     "transform": "scale_10",
