@@ -185,14 +185,12 @@ tests/                 windowing, leakage guards, artifact IO, model shapes
 
 ---
 
-## Prior work
+## References & Prior work
 
 | Model | Note |
 |---|---|
 | SegRNN [3], plain / seq2seq / attention LSTM [4][5] | RNN/LSTM families showed the most visible lag-1 tendency |
 | Transformer [6] | attention-based; lag-1 resistant, like the selective SSM |
-
-## References
 
 - [1] Gu, A., & Dao, T. (2023). *Mamba: Linear-Time Sequence Modeling with Selective State Spaces.* arXiv:2312.00752.
 - [2] Gu, A., Goel, K., & Ré, C. (2021). *Efficiently Modeling Long Sequences with Structured State Spaces.* ICLR 2022.
@@ -203,10 +201,7 @@ tests/                 windowing, leakage guards, artifact IO, model shapes
 
 ---
 
-## About
-
-Developed and maintained by **DoubleTrends L.L.C.**
-
 ## License
 
+Developed and maintained by **DoubleTrends L.L.C.**  
 MIT © 2026 DoubleTrends L.L.C. — see [LICENSE](./LICENSE).
